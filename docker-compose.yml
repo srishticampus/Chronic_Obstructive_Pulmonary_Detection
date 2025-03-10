@@ -1,0 +1,11 @@
+services:
+  web:
+    build: .
+    container_name: chronic_obstructive_django
+    volumes:
+      - .:/code  # Maps the host's directory to /code in the container
+      - ./media:/code/media  # Maps the host's media directory to /code/media in the container
+      - ./db.sqlite3:/code/db.sqlite3  # Maps the host's db.sqlite3 to /code/db.sqlite3 in the container
+    ports:
+      - "8007:8000"
+    restart: always

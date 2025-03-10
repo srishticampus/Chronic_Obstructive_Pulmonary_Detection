@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+<head>
+    <title>{% block tittle %} Sign {% endblock %}</title>
+</head>
+<body>
+
+{% block content %}
+
+    <h2>Welcome, {{ user.username }}!</h2>
+    <p>This is your landing page after logging in.</p>
+</body>
+{% endblock %}
