@@ -1,5 +1,5 @@
 # Use an official Python runtime as the base image
-FROM python:3.11-slim
+FROM python:3.12-slim
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -20,6 +20,7 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 # Copy the Django project into the container
 COPY . .
 RUN python manage.py collectstatic --noinput
+
 # Expose the port the app runs on
 EXPOSE 8000
 
