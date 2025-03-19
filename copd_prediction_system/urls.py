@@ -25,7 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('prediction.urls'))
 ]
-if settings.DEBUG:
+if settings . DEBUG:
     urlpatterns += static(settings.STATIC_URL,
                           document_root =settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL,

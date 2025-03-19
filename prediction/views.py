@@ -1,10 +1,15 @@
 from django.shortcuts import render,redirect
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
 from .forms import SignupForm, LoginForm
 from .models import CustomUser
 from django.contrib.auth.hashers import make_password, check_password
+
+
+from .forms import DoctorRegistrationForm, DoctorLoginForm
+from .models import Doctor
+from django.contrib.auth.hashers import check_password
+
 
 
 def home(request):
@@ -71,3 +76,53 @@ def landing(request):
     return render(request, 'landing.html', {'user': user})
 
 
+
+
+def register_doctor(request):
+    if request.method == 'POST':
+        form = DoctorRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('dr_login')  # Redirect to login page after registration
+    else:
+        form = DoctorRegistrationForm()
+    return render(request, 'dr_register.html', {'form': form})
+
+def doctor_login(request):
+    if request.method == 'POST':
+        form = DoctorLoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            try:
+                doctor = Doctor.objects.get(username=username)
+                if check_password(password, doctor.password):
+                    if doctor.is_approved:
+                        request.session['doctor_id'] = doctor.id  # Store in session
+                        return redirect('dashboard')  # Redirect to the next page
+                    else:
+                        return render(request, 'dr_login.html', {'form': form, 'error': 'Approval pending'})
+                else:
+                    return render(request, 'dr_login.html', {'form': form, 'error': 'Invalid credentials'})
+            except Doctor.DoesNotExist:
+                return render(request, 'ldr_ogin.html', {'form': form, 'error': 'User does not exist'})
+    else:
+        form = DoctorLoginForm()
+    return render(request, 'dr_login.html', {'form': form})
+
+
+def doctor_dashboard(request):
+    if 'doctor_id' not in request.session:
+        return redirect('login')
+    
+    doctor = Doctor.objects.get(id=request.session['doctor_id'])
+    return render(request, 'dashboard.html', {'doctor': doctor})
+
+def doctor_logout(request):
+    request.session.flush()  
+    return redirect('login')
+
+
+def doctor(request):
+    doctors = Doctor.objects.filter(is_approved=True) 
+    return render(request, 'doctor.html', {'doctors': doctors})

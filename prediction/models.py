@@ -16,3 +16,19 @@ class CustomUser(models.Model):
 
     def __str__(self):
         return self.username
+    
+
+
+
+class Doctor(models.Model):
+    username = models.CharField(max_length=150, unique=True)
+    email = models.EmailField(unique=True)
+    password = models.CharField(max_length=255)  # Store hashed passwords
+    is_approved = models.BooleanField(default=False)  # Approval required
+    name = models.CharField(max_length=255, default="Unknown Doctor")  # Default value added
+    image = models.ImageField(upload_to='doctor_images/', blank=True, null=True)  # New field for profile image
+    description = models.TextField(blank=True, null=True)  # New field for doctor description
+
+    def __str__(self):
+        return self.name
+

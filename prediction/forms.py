@@ -3,6 +3,9 @@ from django.core.exceptions import ValidationError
 from .models import CustomUser
 from django import forms
 
+from .models import Doctor
+from django.contrib.auth.hashers import make_password, check_password
+
 
 class SignupForm(forms.Form):
     username = forms.CharField(max_length=150)
@@ -37,3 +40,24 @@ class SignupForm(forms.Form):
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=150)
     password = forms.CharField(widget=forms.PasswordInput)
+
+
+
+class DoctorRegistrationForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput)
+
+    class Meta:
+        model = Doctor
+        fields = ['username', 'email', 'password']
+
+    def save(self, commit=True):
+        doctor = super().save(commit=False)
+        doctor.password = make_password(self.cleaned_data['password'])  # Hash password
+        if commit:
+            doctor.save()
+        return doctor
+
+class DoctorLoginForm(forms.Form):
+    username = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput)
+

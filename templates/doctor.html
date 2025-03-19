@@ -1,0 +1,81 @@
+
+{% extends 'base.html' %}
+
+
+
+<head>
+  <title>{% block tittle %} Doctor  {% endblock %}</title>
+</head>
+<body>
+
+
+<body class="services-page">
+  {% block content %}
+
+
+    <!-- Services Section -->
+    <section id="services" class="services section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Services</h2>
+        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+      </div><!-- End Section Title -->
+
+<div class="container">
+    <div class="row gy-4">
+        {% for doctor in doctors %}
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="service-item item-cyan position-relative">
+                <div class="icon">
+                    <img src="{{ doctor.image.url }}" alt="{{ doctor.name }}" class="img-fluid" style="width:100px; height:100px; border-radius:50%;">
+                </div>
+                <a href="#" class="stretched-link">
+                    <h3>{{ doctor.name }}</h3>
+                </a>
+                <p>{{ doctor.description }}</p>
+            </div>
+        </div><!-- End Doctor Item -->
+        {% empty %}
+        <p class="text-center">No doctors available at the moment.</p>
+        {% endfor %}
+    </div>
+</div>
+
+
+        
+        </div>
+
+      </div>
+
+    </section><!-- /Services Section -->
+
+  </main>
+
+  <footer id="footer" class="footer light-background">
+
+    <div class="container">
+      <div class="copyright text-center ">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">Kelly</strong> <span>All Rights Reserved<br></span></p>
+      </div>
+      <div class="social-links d-flex justify-content-center">
+        <a href=""><i class="bi bi-twitter-x"></i></a>
+        <a href=""><i class="bi bi-facebook"></i></a>
+        <a href=""><i class="bi bi-instagram"></i></a>
+        <a href=""><i class="bi bi-linkedin"></i></a>
+      </div>
+      <div class="credits">
+        <!-- All the links in the footer should remain intact. -->
+        <!-- You can delete the links only if you've purchased the pro version. -->
+        <!-- Licensing information: https://bootstrapmade.com/license/ -->
+        <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
+        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> Distributed by <a href=“https://themewagon.com>ThemeWagon
+      </div>
+    </div>
+
+
+{% endblock %}
+
+</body>
+
+</html>
